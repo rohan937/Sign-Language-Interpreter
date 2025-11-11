@@ -82,17 +82,15 @@ def play_video(text):
             else:
                 print(f"No video available for the word: {word}")
 
-# Function to play a video file in the GUI
 def play_video_file(video_path):
     cap = cv2.VideoCapture(video_path)
     screen_width = root.winfo_screenwidth()
     screen_height = root.winfo_screenheight()
-    frame_skip = 2  # Skip every 2nd frame to speed up video
+    frame_skip = 2  
 
     while cap.isOpened():
         ret, frame = cap.read()
         if ret:
-            # Skip frames to speed up the video
             for _ in range(frame_skip - 1):
                 cap.read()
             
@@ -114,7 +112,6 @@ def clear_image():
     video_display_panel.configure(image='')
     video_display_panel.image = None
 
-# Function to start the video feed
 def start_video_feed():
     cap = cv2.VideoCapture(0)
     while True:
@@ -128,31 +125,24 @@ def start_video_feed():
         root.update_idletasks()
     cap.release()
 
-# Setting up the GUI
 root = tk.Tk()
 root.title("Hand Sign Recognition")
 
-# Fullscreen window
 root.attributes('-fullscreen', True)
 
-# Video feed panel
 video_panel = tk.Label(root)
 video_panel.pack(side="left", padx=10, pady=10)
 
-# Image display panel (for playing videos)
 video_display_panel = tk.Label(root)
-video_display_panel.place(relx=0.5, rely=0.5, anchor='center')  # Center the video display panel
+video_display_panel.place(relx=0.5, rely=0.5, anchor='center') 
 
-# Text display panel
 recognized_text = tk.Text(root, state=tk.DISABLED, width=30, height=10)
 recognized_text.pack(side="right", padx=10, pady=10)
 
-# Start speech recognition in a separate thread
 speech_thread = threading.Thread(target=recognize_speech)
 speech_thread.daemon = True
 speech_thread.start()
 
-# Start video feed in a separate thread
 video_thread = threading.Thread(target=start_video_feed)
 video_thread.daemon = True
 video_thread.start()
